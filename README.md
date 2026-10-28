@@ -26,36 +26,21 @@ If this source and checkpoint are already installed/downloaded, reuse their path
 
 ## 3. Object detection — detect.py
 
-At the top of `detect.py`, set the input video:
+We use **OWLv2** (`google/owlv2-base-patch16-ensemble`) to detect wild boars using text prompts. The script saves bounding boxes, confidence scores and preview images.
+
+Set `INPUT` in `detect.py` to a video or a folder of numeric-named JPEG images:
 
 ```python
 INPUT = Path('/absolute/path/to/boar_video.mp4')
-MAX_FRAMES = 50       # Short test; None processes the full input
-FRAME_STEP = 1       # Save every frame
-DETECT_EVERY = 5     # Detect every fifth saved frame
 ```
 
-A folder of numeric-named JPEGs can also be used:
-
-```python
-INPUT = Path('/absolute/path/to/image_folder')
-FOLDER_FPS = 6.0      # Example: original 30 FPS / extraction stride 5
-```
-
-For videos, FPS is read automatically. Run:
+For an image folder, also set `FOLDER_FPS` to the original video FPS divided by the extraction stride. Video FPS is read automatically. The default test processes 50 frames; use `MAX_FRAMES = None` for the full input.
 
 ```bash
 python detect.py
 ```
 
-Results are saved in `detection_output/`:
-
-- `detections.json`: bounding boxes, scores and prepared-frame information.
-- `frames_<run>/`: prepared JPEG frames used by SAM 2.
-- `boxes_<run>/`: bounding-box preview images and XYWH text files.
-
-Inspect the box previews before running segmentation.
-
+Results are saved in `detection_output/`: `detections.json`, prepared frames and box previews. Check the previews before running segmentation.
 ## 4. Segmentation and tracking — segment.py
 
 At the top of `segment.py`, set:
